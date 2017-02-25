@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Start () {
 
-		targetPosition = transform.position;
 		isMoving = false;	
 	}
 
