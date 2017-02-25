@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : NetworkBehaviour {
 
 	private float speed = 10;
 
@@ -18,6 +19,8 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void Update () {
+		if (!isLocalPlayer) {return;}
+
 		if(Input.GetMouseButton(1))
 			setTargetPosition();
 

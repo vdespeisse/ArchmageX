@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Teleport : MonoBehaviour {
+public class Teleport : NetworkBehaviour {
 
 	Vector3 currentPosition;
 	Vector3 targetPosition;
@@ -16,6 +17,7 @@ public class Teleport : MonoBehaviour {
 	
 	void Update () {
 		//currentPosition = transform.position;
+		if (!isLocalPlayer) {return;}
 
 		if(Input.GetKeyDown(KeyCode.S)) {
 			setTargetPosition();
