@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class Fireball : NetworkBehaviour {
 
 	public GameObject fireballPrefab;
+	public GameObject owner;
 
 	public float speed = 10f;
 
@@ -16,6 +17,7 @@ public class Fireball : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		owner = gameObject;
 
 	}
 	
@@ -27,6 +29,7 @@ public class Fireball : NetworkBehaviour {
 			CmdShoot();
 
 		}
+
 	}
 
 	[Command]
@@ -39,6 +42,7 @@ public class Fireball : NetworkBehaviour {
 		fireball = Instantiate(fireballPrefab, transform.position+direction+offset, transform.rotation) as GameObject;
 
 		fireball.GetComponent<Rigidbody>().velocity = direction * speed;
+		fireball.GetComponent<Projectile> ().owner = owner;
 		NetworkServer.Spawn (fireball);
 		Destroy(fireball, 3f);
 
