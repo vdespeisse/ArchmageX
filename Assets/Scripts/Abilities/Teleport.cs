@@ -38,7 +38,7 @@ public class Teleport : MonoBehaviour {
 		}
 		else {
 			transform.LookAt(targetPosition);
-			transform.position = Mathf.Min(maxRange, Vector3.Distance(targetPosition, transform.position)) * Vector3.Normalize(targetPosition - transform.position);
+			transform.position += Mathf.Min(maxRange, Vector3.Distance(targetPosition, transform.position)) * Vector3.Normalize(targetPosition - transform.position);
 
 		}
 		
