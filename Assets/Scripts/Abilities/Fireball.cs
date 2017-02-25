@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Fireball : MonoBehaviour {
+public class Fireball : NetworkBehaviour {
 
-	public GameObject bullet;
+	public GameObject fireballPrefab;
 
 	public float speed = 10f;
 
@@ -20,20 +21,26 @@ public class Fireball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isLocalPlayer) {return;}
 		if(Input.GetMouseButtonDown(0)) {
 			setTargetPosition();
-			shoot();
+			CmdShoot();
 
 		}
 	}
 
-	void shoot(){
+	[Command]
+	void CmdShoot(){
 
-		GameObject g;
+		GameObject fireball;
+		Vector3 direction = Vector3.Normalize (targetPosition - transform.position);
+		Vector3 offset = new Vector3 (0, 0.5f, 0);
 
-		g = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
-		g.transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);// marche pas ...
-		Destroy(g, 3f);
+		fireball = Instantiate(fireballPrefab, transform.position+direction+offset, transform.rotation) as GameObject;
+
+		fireball.GetComponent<Rigidbody>().velocity = direction * speed;
+		NetworkServer.Spawn (fireball);
+		Destroy(fireball, 3f);
 
 	}
 	void setTargetPosition(){

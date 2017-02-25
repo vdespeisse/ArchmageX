@@ -8,11 +8,12 @@ public class Teleport : NetworkBehaviour {
 	Vector3 currentPosition;
 	Vector3 targetPosition;
 
+
 	public float maxRange = 10f;
 
 	
 	void Start () {
-
+		
 	}
 	
 	void Update () {
@@ -34,6 +35,7 @@ public class Teleport : NetworkBehaviour {
 			targetPosition = ray.GetPoint(point);
 	}
 	void blink(){
+		gameObject.GetComponentInParent<PlayerMovement>().targetPosition = targetPosition;
 		if(Vector3.Distance(transform.position, targetPosition) <= maxRange) {
 			transform.LookAt(targetPosition);
 			transform.position =  targetPosition;

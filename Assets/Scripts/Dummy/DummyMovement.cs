@@ -3,38 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerMovement : NetworkBehaviour {
+public class DummyMovement : NetworkBehaviour {
 
 	private float speed = 10;
 
 	public Vector3 targetPosition;
 	private bool isMoving;
-
+	private float timeSinceMoved = 0;
+	Bounds bounds = GameObject.Find("Ground").GetComponent<MeshCollider>().bounds;
 
 
 	void Start () {
+		
+
+
+
 
 		isMoving = false;	
 	}
 
 
 	void Update () {
-		if (!isLocalPlayer) {return;}
-
-		if(Input.GetMouseButton(1))
-			setTargetPosition();
+		
+		timeSinceMoved += Time.deltaTime;
+		if (timeSinceMoved >= 2.0f) {
+			setTargetPosition ();
+			timeSinceMoved = 0;
+		}
+		
 
 		if(isMoving)
 			move();
 	}
 
 	void setTargetPosition(){
-		Plane plane = new Plane(Vector3.up, transform.position);
-		Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
-		float point = 0f;
-
-		if(plane.Raycast(ray, out point))
-			targetPosition = ray.GetPoint(point);
+		targetPosition = new Vector3 (Random.Range (-8, 8), 1, Random.Range (-8, 8));
 
 		isMoving = true;
 	}
@@ -44,8 +47,8 @@ public class PlayerMovement : NetworkBehaviour {
 
 		if(transform.position == targetPosition)
 			isMoving = false;
-		Debug.DrawLine(transform.position, targetPosition, Color.red);
- 	 }
+		
+	}
 
 
 }
