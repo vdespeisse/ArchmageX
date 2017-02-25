@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour {
 			setTargetPosition();
 
 		if(isMoving)
-			Move();
+			move();
 	}
 
 	void setTargetPosition(){
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		isMoving = true;
 	}
-	void Move(){
+	void move(){
 		transform.LookAt(targetPosition);
 		transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 

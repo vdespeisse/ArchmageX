@@ -5,18 +5,47 @@ using UnityEngine;
 public class Teleport : MonoBehaviour {
 
 	Vector3 currentPosition;
+	Vector3 targetPosition;
 
-	public float range = 10f;
+	public float maxRange = 10f;
 
 	
 	void Start () {
-		
+
 	}
 	
 	void Update () {
-		//if(Input.GetKey(KeyCode.S))   
+		//currentPosition = transform.position;
+
+		if(Input.GetKeyDown(KeyCode.S)) {
+			setTargetPosition();
+			blink();
+		}
 	}
+
+	void setTargetPosition(){
+		Plane plane = new Plane(Vector3.up, transform.position);
+		Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
+		float point = 0f;
+		
+		if(plane.Raycast(ray, out point))
+			targetPosition = ray.GetPoint(point);
+	}
+	void blink(){
+		if(Vector3.Distance(transform.position, targetPosition) <= maxRange) {
+			transform.LookAt(targetPosition);
+			transform.position =  targetPosition;
+		}
+		else {
+			transform.LookAt(targetPosition);
+			transform.position = Mathf.Min(maxRange, Vector3.Distance(targetPosition, transform.position)) * Vector3.Normalize(targetPosition - transform.position);
+
+		}
+		
+
+	}
+}
 
 
 		
-}
+
