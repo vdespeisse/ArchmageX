@@ -2,23 +2,63 @@
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
+	[HideInInspector]
 	public GameObject owner;
+	[HideInInspector]
+	public Vector3 startPosition;
+	public bool destroyOnHit = true;
+	public bool destroyOnHitUnit = true;
+	public float maxRange = -1;
+	public float maxDuration = 15f;
+	[HideInInspector]
+	public float aliveTime = 0;
+	public int damage = 10;
+	[HideInInspector]
+	public GameObject hit;
+	[HideInInspector]
 
-	void Start() {
+
+	public virtual void Start() {
+
 	}
 
-	void OnCollisionEnter(Collision collision)
-	{
-		var hit = collision.gameObject;
-		if (hit == owner) {
-			return;
+	public virtual void Update() {
+		if (hit != null) {
+			
 		}
-		var hitHero = hit.GetComponent<HeroManager>();
-		if (hitHero.currentHealth  >= 0)
-		{
-			hitHero.TakeDamage(10);
+		aliveTime += Time.deltaTime;
+		if (maxRange != -1) {
+			if (Vector3.Distance (startPosition, transform.position) > maxRange)
+				Destroy (gameObject); 
+		}
+		if (maxDuration != -1) {
+				if (aliveTime >= maxDuration) Destroy(gameObject);
 		}
 
-		Destroy(gameObject);
+			
+
+	}
+	protected virtual void OnCollisionEnter(Collision collision)
+	{
+		hit = collision.gameObject;
+		if (hit == owner) {
+			hit = null;
+			return;
+		}
+
+		var hit_HeroManager = hit.GetComponent<HeroManager>();
+		if (hit_HeroManager != null)
+			OnHitUnit (hit_HeroManager);
+		else {
+			if (destroyOnHit)
+				Destroy (gameObject);
+		}
+
+
+	}
+	public virtual void OnHitUnit(HeroManager heroManager){
+		if (heroManager.currentHealth >= 0) {
+			heroManager.TakeDamage (damage);
+		}
 	}
 }

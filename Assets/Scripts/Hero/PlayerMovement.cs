@@ -18,7 +18,7 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 
-	void Update () {
+	public virtual void Update () {
 		if (!isLocalPlayer) {return;}
 
 		if(Input.GetMouseButton(1))
@@ -46,6 +46,11 @@ public class PlayerMovement : NetworkBehaviour {
 			isMoving = false;
 		Debug.DrawLine(transform.position, targetPosition, Color.red);
  	 }
+
+	public void stopMove() {
+		isMoving = false;
+		targetPosition = transform.position;
+	}
 
 
 }

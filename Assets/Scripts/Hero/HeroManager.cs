@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 
-public class HeroManager : MonoBehaviour {
+public class HeroManager : NetworkBehaviour {
 
 	public const float maxHealth = 100;
+
+	[SyncVar(hook = "OnChangeHealth")]
 	public float currentHealth = maxHealth;
 	public RectTransform healthBar;
+
 	private float healthBarSize;
 
 	public void Start() {
@@ -15,6 +19,8 @@ public class HeroManager : MonoBehaviour {
 
 	public void TakeDamage(int amount)
 	{
+		if (!isServer) {return;}
+
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 		{
@@ -22,8 +28,11 @@ public class HeroManager : MonoBehaviour {
 			Destroy (gameObject);
 			Debug.Log("Dead!");
 		}
-		float ratio = currentHealth/maxHealth;
+			
+	}
+
+	void OnChangeHealth(float health) {
+		float ratio = health/maxHealth;
 		healthBar.sizeDelta = new Vector2(healthBarSize*ratio, healthBar.sizeDelta.y);
-		Debug.Log (healthBar.sizeDelta);
 	}
 }
