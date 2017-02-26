@@ -8,6 +8,9 @@ public class Teleport : NetworkBehaviour {
 	Vector3 currentPosition;
 	Vector3 targetPosition;
 
+	public float cd;
+	public float cdTimer;
+
 
 	public float maxRange = 10f;
 
@@ -17,12 +20,27 @@ public class Teleport : NetworkBehaviour {
 	}
 	
 	void Update () {
+
+		if(cdTimer >0)
+		{
+			cdTimer -= Time.deltaTime;
+		}
+		if(cdTimer < 0)
+		{
+			cdTimer = 0;
+		}
+
+
+
+
+
 		//currentPosition = transform.position;
 		if (!isLocalPlayer) {return;}
 
-		if(Input.GetKeyDown(KeyCode.S)) {
+		if(Input.GetKeyDown(KeyCode.S) && cdTimer == 0) {
 			setTargetPosition();
 			blink();
+			cdTimer = cd;
 		}
 	}
 
