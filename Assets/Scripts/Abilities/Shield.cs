@@ -5,7 +5,7 @@ public class Shield : MonoBehaviour {
 
 	public float duration;
 	float timer;
-	public GameObject shield;
+	public GameObject myOwner;
 
 
 	void Start () {
@@ -15,21 +15,14 @@ public class Shield : MonoBehaviour {
 	void Update () {
 		timer -= Time.deltaTime;
 
-
-		if(Input.GetMouseButton(2))
-		   ShieldActivate();
-
-	}
-
-	void ShieldActivate() {
-		GameObject s;
-		s = (GameObject)Instantiate (shield, transform.position, shield.transform.rotation);
-	
-	if (timer <= 0) 
-		Destroy(s);
+		transform.position = myOwner.transform.position;
+		
+		if (timer <= 0) 
+			Death();
 
 	}
 
 	public void Death(){
+		Destroy(gameObject);
 	}
 }
