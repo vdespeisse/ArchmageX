@@ -65,7 +65,6 @@ public class SkillCooldowns : MonoBehaviour {
 		}
 
 
-		//print(QonCD);
 		foreach (Skill s in skills) 
 		{
 

@@ -10,9 +10,12 @@ public class DummyMovement : NetworkBehaviour {
 	public Vector3 targetPosition;
 	private bool isMoving;
 	private float timeSinceMoved = 0;
-	Bounds bounds = GameObject.Find("Ground").GetComponent<MeshCollider>().bounds;
 
+	void Awake() {
 
+		Bounds bounds = GameObject.Find("Ground").GetComponent<MeshCollider>().bounds;
+
+	}
 	void Start () {
 		
 
