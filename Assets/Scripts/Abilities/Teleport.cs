@@ -3,57 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Teleport : NetworkBehaviour {
+public class Teleport : Ability {
 
 	Vector3 currentPosition;
-	Vector3 targetPosition;
 
-	public float cd;
-	public float cdTimer;
 
 
 	public float maxRange = 10f;
 
 	
-	void Start () {
+	protected override void Start () {
+		cooldown = 3f;
+		base.Start ();
+
 		
 	}
 	
-	void Update () {
-
-		if(cdTimer >0)
-		{
-			cdTimer -= Time.deltaTime;
-		}
-		if(cdTimer < 0)
-		{
-			cdTimer = 0;
-		}
-
-
-
-
+	protected override void Update () {
 
 		//currentPosition = transform.position;
-		if (!isLocalPlayer) {return;}
 
-		if(Input.GetKeyDown(KeyCode.S) && cdTimer == 0) {
-			setTargetPosition();
-			blink();
-			cdTimer = cd;
-		}
+		if (Input.GetKeyUp (KeyCode.S))
+			ClickAbility ();
+		base.Update ();
+
 	}
 
-	void setTargetPosition(){
-		Plane plane = new Plane(Vector3.up, transform.position);
-		Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
-		float point = 0f;
-		
-		if(plane.Raycast(ray, out point))
-			targetPosition = ray.GetPoint(point);
-	}
-	void blink(){
-		gameObject.GetComponentInParent<PlayerMovement>().targetPosition = targetPosition;
+
+	protected override void Cast(){
+		setTargetPosition ();
+		gameObject.GetComponentInParent<PlayerController>().targetPosition = targetPosition;
 		if(Vector3.Distance(transform.position, targetPosition) <= maxRange) {
 			transform.LookAt(targetPosition);
 			transform.position =  targetPosition;
