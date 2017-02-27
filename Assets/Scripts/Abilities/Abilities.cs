@@ -6,6 +6,7 @@ public class Abilities : MonoBehaviour {
 
 	public GameObject shield;
 
+
 	void Start () {
 		
 	}
