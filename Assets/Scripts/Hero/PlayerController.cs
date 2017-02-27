@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour {
 
@@ -14,6 +15,8 @@ public class PlayerController : NetworkBehaviour {
 	[SyncVar(hook = "OnChangeHealth")]
 	public float currentHealth = maxHealth;
 	public RectTransform healthBar;
+	public Image currentHealthbar;
+	public Text ratioText;
 
 	private float healthBarSize;
 
@@ -59,22 +62,29 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	// HEALTH STUFF
-	public void TakeDamage(int amount)
+	public void TakeDamage(float amount)
 	{
 		if (!isServer) {return;}
 
 		currentHealth -= amount;
-		if (currentHealth <= 0)
-		{
+		if (currentHealth <= 0) {
 			currentHealth = 0;
 			Destroy (gameObject);
-			Debug.Log("Dead!");
-		}
+			Debug.Log ("Dead!");
+		} else if (currentHealth > maxHealth)
+			currentHealth = maxHealth;
 
+	}
+	private void HealDamage(float heal) {
+		TakeDamage (-heal);
 	}
 
 	void OnChangeHealth(float health) {
 		float ratio = health/maxHealth;
-		healthBar.sizeDelta = new Vector2(healthBarSize*ratio, healthBar.sizeDelta.y);
+		//healthBar.sizeDelta = new Vector2(healthBarSize*ratio, healthBar.sizeDelta.y);
+		Vector3 newScale = new Vector3(ratio,1,1);
+		healthBar.localScale = newScale;
+		currentHealthbar.rectTransform.localScale = newScale;
+		ratioText.text = (ratio*100).ToString("0")  + '%';
 	}
 }

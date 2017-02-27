@@ -8,9 +8,15 @@ public class damageTest : MonoBehaviour {
 	public float damage = 10;
 
 	private void OnTriggerStay(Collider col)
-	{
-		if(col.tag == "Player")
-			col.SendMessage((isDamaging)?"TakeDamage" : "HealDamage", Time.deltaTime * damage);
+	{	
+		Debug.Log (col);
+		var playerController = col.GetComponent<PlayerController> ();
+		if (playerController != null) {
+			float damageTaken = Time.deltaTime * damage;
+			if (isDamaging)
+				playerController.TakeDamage (damageTaken);
+			else playerController.TakeDamage (-damageTaken);
+		}
 	}
 
 
