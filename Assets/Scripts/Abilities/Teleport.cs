@@ -23,7 +23,7 @@ public class Teleport : Ability {
 
 		//currentPosition = transform.position;
 
-		if (Input.GetKeyUp (KeyCode.S))
+		if (Input.GetKeyDown (KeyCode.S))
 			ClickAbility ();
 		base.Update ();
 

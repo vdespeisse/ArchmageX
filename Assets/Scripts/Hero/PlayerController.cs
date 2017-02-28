@@ -75,7 +75,7 @@ public class PlayerController : NetworkBehaviour {
 			currentHealth = maxHealth;
 
 	}
-	private void HealDamage(float heal) {
+	public void HealDamage(float heal) {
 		TakeDamage (-heal);
 	}
 
