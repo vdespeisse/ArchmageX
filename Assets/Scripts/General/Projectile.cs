@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour {
 			return;
 		}
 
-		var hit_HeroManager = hit.GetComponent<HeroManager>();
+		var hit_HeroManager = hit.GetComponent<PlayerController>();
 		if (hit_HeroManager != null)
 			OnHitUnit (hit_HeroManager);
 		else {
@@ -56,7 +56,7 @@ public class Projectile : MonoBehaviour {
 
 
 	}
-	public virtual void OnHitUnit(HeroManager heroManager){
+	public virtual void OnHitUnit(PlayerController heroManager){
 		if (heroManager.currentHealth >= 0) {
 			heroManager.TakeDamage (damage);
 		}

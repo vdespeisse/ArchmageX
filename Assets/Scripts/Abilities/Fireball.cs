@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour {
 
-	public GameObject fireballPrefab;
+	public string fireballPrefab  = "Fireball";
 	public GameObject owner;
+	private PhotonView view;
 
 	public float speed = 10f;
 
@@ -17,26 +18,27 @@ public class Fireball : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		owner = gameObject;
+		view = GetComponent<PhotonView>();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetMouseButtonDown(0)) {
-			setTargetPosition();
-			CmdShoot();
+		if(Input.GetMouseButtonDown(0)) 
+			if(view.isMine){
+				setTargetPosition();
+				CmdShoot();
+			}
 
-		}
 
 	}
 
 	void CmdShoot(){
 
-		GameObject fireball;
 		Vector3 direction = Vector3.Normalize (targetPosition - transform.position);
 		Vector3 offset = new Vector3 (0, 0.5f, 0);
 
-		fireball = Instantiate(fireballPrefab, transform.position+direction+offset, transform.rotation) as GameObject;
+		GameObject fireball = PhotonNetwork.Instantiate(fireballPrefab, transform.position + direction + offset, transform.rotation, 0);
 
 		fireball.GetComponent<Rigidbody>().velocity = direction * speed;
 		fireball.GetComponent<Projectile> ().owner = owner;

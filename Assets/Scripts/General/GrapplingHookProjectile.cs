@@ -31,7 +31,7 @@ public class GrapplingHookProjectile : Projectile
 	}
 	protected override void OnCollisionEnter(Collision collision) {
 		base.OnCollisionEnter (collision);
-		var hit_HeroManager = hit.GetComponent<HeroManager>();
+		var hit_HeroManager = hit.GetComponent<PlayerController>();
 		Vector3 contactPoint = collision.contacts [0].point;
 		if (hit_HeroManager != null) 
 			attachOn_moving (contactPoint, hit.transform);
