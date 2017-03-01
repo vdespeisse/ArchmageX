@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSync : MonoBehaviour {
+public class NetworkSync: MonoBehaviour {
 
 
 	private Vector3 correctPlayerPos;

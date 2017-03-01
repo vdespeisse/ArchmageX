@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour {
 	public bool destroyOnHitUnit = true;
 	public float maxRange = -1;
 	public float maxDuration = 15f;
+	public float lifeDuration = 2f;
 	[HideInInspector]
 	public float aliveTime = 0;
 	public int damage = 10;
@@ -60,5 +61,11 @@ public class Projectile : MonoBehaviour {
 		if (heroManager.currentHealth >= 0) {
 			heroManager.TakeDamage (damage);
 		}
+	}
+
+	public void Testicule()
+	{
+		print("testicule opérationnel");
+		Destroy(gameObject, lifeDuration ); //test
 	}
 }
