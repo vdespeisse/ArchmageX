@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-public class Ability : NetworkBehaviour
+public class Ability : MonoBehaviour
 {
 	protected float cooldown = 0;
 	protected float timeSinceCast;
@@ -18,7 +18,6 @@ public class Ability : NetworkBehaviour
 	// Update is called once per frame
 	protected virtual void Update ()
 	{
-		if (!isLocalPlayer) {return;}
 		timeSinceCast += Time.deltaTime;
 	
 	}

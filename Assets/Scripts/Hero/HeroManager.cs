@@ -3,11 +3,10 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 
-public class HeroManager : NetworkBehaviour {
+public class HeroManager : MonoBehaviour {
 
 	public const float maxHealth = 100;
 
-	[SyncVar(hook = "OnChangeHealth")]
 	public float currentHealth = maxHealth;
 	public RectTransform healthBar;
 
@@ -19,7 +18,6 @@ public class HeroManager : NetworkBehaviour {
 
 	public void TakeDamage(int amount)
 	{
-		if (!isServer) {return;}
 
 		currentHealth -= amount;
 		if (currentHealth <= 0)

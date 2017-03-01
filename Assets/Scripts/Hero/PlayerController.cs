@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	private float moveSpeed = 10;
 	[HideInInspector]
@@ -12,29 +11,34 @@ public class PlayerController : NetworkBehaviour {
 	private bool isMoving = false;
 	public const float maxHealth = 100;
 
-	[SyncVar(hook = "OnChangeHealth")]
 	public float currentHealth = maxHealth;
 	public RectTransform healthBar;
 	public Image currentHealthbar;
 	public Text ratioText;
 
 	private float healthBarSize;
-
+	PhotonView view;
 
 
 	void Start () {
 		healthBarSize = healthBar.sizeDelta.x;
+
+		view = GetComponent<PhotonView>();
+
 	}
 
 
-	public virtual void Update () {
-		if (!isLocalPlayer) {return;}
+	 void Update () {
 
 		if(Input.GetMouseButton(1))
 			setTargetPosition();
 
 		if(isMoving)
-			move();
+		{
+			if(view.isMine)
+				move();
+
+		}
 	}
 	// MOVING STUFF
 	void setTargetPosition(){
@@ -47,13 +51,16 @@ public class PlayerController : NetworkBehaviour {
 
 		isMoving = true;
 	}
-	void move(){
-		transform.LookAt(targetPosition);
-		transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+	void move() {
+	
+			transform.LookAt(targetPosition);
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+			
+			if(transform.position == targetPosition)
+				isMoving = false;
+			Debug.DrawLine(transform.position, targetPosition, Color.red);
 
-		if(transform.position == targetPosition)
-			isMoving = false;
-		Debug.DrawLine(transform.position, targetPosition, Color.red);
+			
 	}
 
 	public void stopMove() {
@@ -64,8 +71,6 @@ public class PlayerController : NetworkBehaviour {
 	// HEALTH STUFF
 	public void TakeDamage(float amount)
 	{
-		if (!isServer) {return;}
-
 		currentHealth -= amount;
 		if (currentHealth <= 0) {
 			currentHealth = 0;
@@ -74,12 +79,14 @@ public class PlayerController : NetworkBehaviour {
 		} else if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
 
+
 	}
 	public void HealDamage(float heal) {
 		TakeDamage (-heal);
 	}
 
-	void OnChangeHealth(float health) {
+	public void OnChangeHealth(float health) { //t sensé mettre quoi ds health  pr call la method ?
+		print("changehealth");
 		float ratio = health/maxHealth;
 		//healthBar.sizeDelta = new Vector2(healthBarSize*ratio, healthBar.sizeDelta.y);
 		Vector3 newScale = new Vector3(ratio,1,1);

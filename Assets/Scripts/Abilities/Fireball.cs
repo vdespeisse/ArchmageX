@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Fireball : NetworkBehaviour {
+public class Fireball : MonoBehaviour {
 
 	public GameObject fireballPrefab;
 	public GameObject owner;
@@ -23,7 +22,6 @@ public class Fireball : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!isLocalPlayer) {return;}
 		if(Input.GetMouseButtonDown(0)) {
 			setTargetPosition();
 			CmdShoot();
@@ -32,7 +30,6 @@ public class Fireball : NetworkBehaviour {
 
 	}
 
-	[Command]
 	void CmdShoot(){
 
 		GameObject fireball;
@@ -43,7 +40,6 @@ public class Fireball : NetworkBehaviour {
 
 		fireball.GetComponent<Rigidbody>().velocity = direction * speed;
 		fireball.GetComponent<Projectile> ().owner = owner;
-		NetworkServer.Spawn (fireball);
 		Destroy(fireball, 3f);
 
 	}

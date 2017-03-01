@@ -69,11 +69,11 @@ public class GrapplingHook : MonoBehaviour {
 	public void attachOn_moving(Transform contactTransform, Vector3 offset) {
 		
 		attachedTo_moving = contactTransform;
-		owner.GetComponent<PlayerMovement> ().stopMove ();
+		owner.GetComponent<PlayerController> ().stopMove ();
 	}
 	public void attachOn_static(Vector3 contactPoint){
 		attachedTo_static = contactPoint;
-		owner.GetComponent<PlayerMovement> ().stopMove ();
+		owner.GetComponent<PlayerController> ().stopMove ();
 	}
 
 	void Detach() {

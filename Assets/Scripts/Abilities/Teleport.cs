@@ -12,25 +12,23 @@ public class Teleport : Ability {
 	public float maxRange = 10f;
 
 	
-	protected override void Start () {
+	  void Start () {
 		cooldown = 3f;
-		base.Start ();
 
 		
 	}
 	
-	protected override void Update () {
+	  void Update () {
 
 		//currentPosition = transform.position;
 
 		if (Input.GetKeyDown (KeyCode.S))
 			ClickAbility ();
-		base.Update ();
 
 	}
 
 
-	protected override void Cast(){
+	  void Cast(){
 		setTargetPosition ();
 		gameObject.GetComponentInParent<PlayerController>().targetPosition = targetPosition;
 		if(Vector3.Distance(transform.position, targetPosition) <= maxRange) {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class DummyMovement : NetworkBehaviour {
+public class DummyMovement : MonoBehaviour {
 
 	private float speed = 10;
 
