@@ -30,14 +30,14 @@ public class Teleport : Ability {
 
 	  void Cast(){
 		setTargetPosition ();
-		gameObject.GetComponentInParent<PlayerController>().targetPosition = targetPosition;
-		if(Vector3.Distance(transform.position, targetPosition) <= maxRange) {
-			transform.LookAt(targetPosition);
-			transform.position =  targetPosition;
+		gameObject.GetComponentInParent<PlayerController>().targetPosition = targetPos;
+		if(Vector3.Distance(transform.position, targetPos) <= maxRange) {
+			transform.LookAt(targetPos);
+			transform.position =  targetPos;
 		}
 		else {
-			transform.LookAt(targetPosition);
-			transform.position += Mathf.Min(maxRange, Vector3.Distance(targetPosition, transform.position)) * Vector3.Normalize(targetPosition - transform.position);
+			transform.LookAt(targetPos);
+			transform.position += Mathf.Min(maxRange, Vector3.Distance(targetPos, transform.position)) * Vector3.Normalize(targetPos - transform.position);
 
 		}
 		

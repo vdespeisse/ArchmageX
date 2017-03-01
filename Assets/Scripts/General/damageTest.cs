@@ -6,6 +6,10 @@ public class damageTest : MonoBehaviour {
 
 	public bool isDamaging;
 	public float damage = 10;
+	void Start() {
+
+
+	}
 
 	private void OnTriggerStay(Collider col)
 	{	
@@ -18,6 +22,7 @@ public class damageTest : MonoBehaviour {
 				print("cdf");
 
 				playerController.TakeDamage (damageTaken);
+				playerController.updateHpBar(damage);
 
 			}
 				

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireball : MonoBehaviour {
+public class Fireball : Ability {
 
 	public string fireballPrefab  = "Fireball";
 	public GameObject owner;
 	private PhotonView view;
+	private float manaCost = 10f;
 
 	GameObject fireball;
 
@@ -31,10 +32,12 @@ public class Fireball : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0)) 
 			if(view.isMine){
 				setTargetPosition();
+				ManaHandler(manaCost);
+				ClickAbility();
 				CmdShoot();
+				
 
-				Debug.Log ("fireball hit");
-				TesticuleCall(fireball.GetComponent<PhotonView>().viewID); //dc je call le id dla prefab fireball
+				//TesticuleCall(fireball.GetComponent<PhotonView>().viewID); //dc je call le id dla prefab fireball
 			}
 
 
@@ -65,12 +68,11 @@ public class Fireball : MonoBehaviour {
 			targetPosition = ray.GetPoint(point);
 	}
 
-	[PunRPC] //rpc call pr faire x sur tt les écrans
+	/***[PunRPC] //rpc call pr faire x sur tt les écrans
 	void TesticuleCall(int viewID) {
 
 		
 		fireball = PhotonView.Find(viewID).gameObject;
-		print (fireball.name);
 
 		fireball.SendMessage("Testicule");
 
@@ -79,5 +81,5 @@ public class Fireball : MonoBehaviour {
 			view.RPC("TesticuleCall", PhotonTargets.OthersBuffered, viewID);
 		}
 
-	}
+	}***/
 }

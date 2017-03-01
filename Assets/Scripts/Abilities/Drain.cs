@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drain : MonoBehaviour {
+public class Drain : Ability {
 
 	private float damage = 1f;
 	private PlayerController targetPlayer;
 	private PlayerController owner;
 	private RaycastHit hit;
+	private float manaCost = 30;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -18,8 +20,10 @@ public class Drain : MonoBehaviour {
 
 	void Update() {
 
-		if(Input.GetKey(KeyCode.D)) {
+		if(Input.GetKeyDown(KeyCode.D)) {
 			setTargetPlayer();
+			ManaHandler(manaCost);
+			ClickAbility();
 			if(targetPlayer !=null) {
 				targetPlayer.TakeDamage(damage);
 				owner.TakeDamage(-damage);

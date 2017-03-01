@@ -5,18 +5,31 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	private float moveSpeed = 10;
 	[HideInInspector]
 	public Vector3 targetPosition;
 	private bool isMoving = false;
+	private float moveSpeed = 10;
+
+
 	public const float maxHealth = 100;
+	public const float maxMana = 100;
+
 
 	public float currentHealth = maxHealth;
-	public RectTransform healthBar;
-	public Image currentHealthbar;
-	public Text ratioText;
+	public float currentMana = maxMana;
+
 
 	private float healthBarSize;
+	public RectTransform healthBar;
+	public Image currentHealthbar;
+	public Text hpRatioText;
+
+	public RectTransform manaBar;
+	public Image currentManaBar;
+	public Text manaRatioText;
+
+
+
 	PhotonView view;
 
 
@@ -85,13 +98,20 @@ public class PlayerController : MonoBehaviour {
 		TakeDamage (-heal);
 	}
 
-	public void OnChangeHealth(float health) { //t sensé mettre quoi ds health  pr call la method ?
-		print("changehealth");
-		float ratio = health/maxHealth;
-		//healthBar.sizeDelta = new Vector2(healthBarSize*ratio, healthBar.sizeDelta.y);
+	public void updateHpBar(float health) { //t sensé mettre quoi ds health  pr call la method ?
+		float ratio = (currentHealth - health) / maxHealth;
 		Vector3 newScale = new Vector3(ratio,1,1);
 		healthBar.localScale = newScale;
 		currentHealthbar.rectTransform.localScale = newScale;
-		ratioText.text = (ratio*100).ToString("0")  + '%';
+		hpRatioText.text = (ratio*100).ToString("0")  + '%';
+	}
+
+	public void updateManaBar(float mana) {
+		float ratio = mana / maxMana;
+		Vector3 newScale = new Vector3(ratio,1,1);
+//		manaBar.localScale = newScale;
+		currentManaBar.rectTransform.localScale = newScale;
+		manaRatioText.text = (ratio*100).ToString("0")  + '%';
+		
 	}
 }

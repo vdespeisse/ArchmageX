@@ -6,39 +6,95 @@ public class Ability : MonoBehaviour
 {
 	protected float cooldown = 0;
 	protected float timeSinceCast;
-	protected Vector3 targetPosition;
+	protected Vector3 targetPos;
+
+	protected float EnergyCost;
+	protected float currentMana = 100f;
+	protected float maxMana = 100f;
+
+	private bool hasEnoughMana = true;
+	private bool canCast = true;
+
 
 	// Use this for initialization
-	protected virtual void Start ()
+	protected  void Start ()
 	{
 		timeSinceCast = cooldown;
 
 	}
 	
 	// Update is called once per frame
-	protected virtual void Update ()
+	protected  void Update ()
 	{
 		timeSinceCast += Time.deltaTime;
-	
+
+
 	}
+
 	protected void setTargetPosition(){
 		Plane plane = new Plane(Vector3.up, transform.position);
 		Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
 		float point = 0f;
 
 		if(plane.Raycast(ray, out point))
-			targetPosition = ray.GetPoint(point);
+			targetPos = ray.GetPoint(point);
 	}
 
 	protected void ClickAbility() {
-		Debug.Log ("Casted");
-		if (timeSinceCast >= cooldown) {
-			Cast ();
+		PlayerController go = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+
+		
+		if ((timeSinceCast >= cooldown) &&(hasEnoughMana)) 
+		{
+			currentMana -= EnergyCost; // currentMana is always = to 100 jdois store la mana qque part somehow
+			go.updateManaBar(currentMana);
+			//Cast();
 			timeSinceCast = 0;
-		} else
-			Debug.Log ("Ability On CD");
+
+		}  
+		if ((timeSinceCast >= cooldown) && (!hasEnoughMana))
+		{
+			print ("Has not enough Mana !");
+		}
+		else if((timeSinceCast < cooldown) && (hasEnoughMana))
+		{
+			print ("Ability is On CD");
+		}
+			
 	}
-	protected virtual void Cast(){
+
+	protected void Cast(){
+		
+		if(canCast)
+		{
+
+			//TODO
+
+
+		}
+		 
+
+	}
+
+	protected void ManaHandler(float cost) {
+		EnergyCost = cost;
+
+
+		if(EnergyCost <= currentMana)
+			hasEnoughMana = true;
+		else 
+		{
+			hasEnoughMana = false;
+		}
+	
+		if(currentMana >= maxMana)
+			currentMana = maxMana;
+
+
+		
+
+
 	}
 }
 

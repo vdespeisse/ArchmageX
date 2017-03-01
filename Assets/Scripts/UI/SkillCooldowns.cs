@@ -32,7 +32,6 @@ public class SkillCooldowns : MonoBehaviour {
 			
 			if(skills[0].currentCooldown >= skills[0].cooldown)
 			{
-				Debug.Log("qpressed");
 				skills[0].currentCooldown = 0;
 				
 			}
@@ -46,7 +45,6 @@ public class SkillCooldowns : MonoBehaviour {
 			
 			if(skills[1].currentCooldown >= skills[1].cooldown)
 			{
-				Debug.Log("Spressed");
 				skills[1].currentCooldown = 0;
 				
 			}
@@ -57,7 +55,6 @@ public class SkillCooldowns : MonoBehaviour {
 		{
 			if(skills[2].currentCooldown >= skills[2].cooldown)
 			{
-				Debug.Log("Dpressed");
 				skills[2].currentCooldown = 0;
 				
 			}
