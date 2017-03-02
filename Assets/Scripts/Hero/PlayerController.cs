@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : Photon.MonoBehaviour {
 
 	[HideInInspector]
 	public Vector3 targetPosition;
@@ -28,27 +28,28 @@ public class PlayerController : MonoBehaviour {
 	public Image currentManaBar;
 	public Text manaRatioText;
 
+	[HideInInspector]
+	public bool isRemote;
 
 
-	PhotonView view;
 
 
 	void Start () {
 		healthBarSize = healthBar.sizeDelta.x;
 
-		view = GetComponent<PhotonView>();
 
 	}
 
 
 	 void Update () {
-
+		if (isRemote) {
+			return;
+		}
 		if(Input.GetMouseButton(1))
 			setTargetPosition();
 
 		if(isMoving)
 		{
-			if(view.isMine)
 				move();
 
 		}
@@ -65,15 +66,15 @@ public class PlayerController : MonoBehaviour {
 		isMoving = true;
 	}
 	void move() {
-	
+
 			transform.LookAt(targetPosition);
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-			
+
 			if(transform.position == targetPosition)
 				isMoving = false;
 			Debug.DrawLine(transform.position, targetPosition, Color.red);
 
-			
+
 	}
 
 	public void stopMove() {
@@ -84,6 +85,9 @@ public class PlayerController : MonoBehaviour {
 	// HEALTH STUFF
 	public void TakeDamage(float amount)
 	{
+		if (!PhotonNetwork.isMasterClient) {
+			return;
+		}
 		currentHealth -= amount;
 		if (currentHealth <= 0) {
 			currentHealth = 0;
@@ -91,6 +95,8 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("Dead!");
 		} else if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
+		photonView.RPC ("updateHealth", PhotonTargets.All, currentHealth);
+		
 
 
 	}
@@ -98,20 +104,23 @@ public class PlayerController : MonoBehaviour {
 		TakeDamage (-heal);
 	}
 
-	public void updateHpBar(float health) { //t sensé mettre quoi ds health  pr call la method ?
-		float ratio = (currentHealth - health) / maxHealth;
+	[PunRPC]
+	public void updateHealth(float health) { //t sensé mettre quoi ds health  pr call la method ?
+		currentHealth = health;
+		float ratio = currentHealth / maxHealth;
 		Vector3 newScale = new Vector3(ratio,1,1);
 		healthBar.localScale = newScale;
 		currentHealthbar.rectTransform.localScale = newScale;
 		hpRatioText.text = (ratio*100).ToString("0")  + '%';
 	}
 
-	public void updateManaBar(float mana) {
+	public void updateMana(float mana) {
+		currentMana = mana;
 		float ratio = mana / maxMana;
 		Vector3 newScale = new Vector3(ratio,1,1);
 //		manaBar.localScale = newScale;
 		currentManaBar.rectTransform.localScale = newScale;
 		manaRatioText.text = (ratio*100).ToString("0")  + '%';
-		
+
 	}
 }

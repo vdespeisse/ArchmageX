@@ -7,47 +7,34 @@ public class Fireball : Ability {
 	public string fireballPrefab  = "Fireball";
 	public GameObject owner;
 	private PhotonView view;
-	private float manaCost = 10f;
+
 
 	GameObject fireball;
 
 	public float speed = 10f;
 
-	private Vector3 targetPosition;
-
-
-
-
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
 		owner = gameObject;
 		view = GetComponent<PhotonView>();
+		manaCost = 10f;
 
 
 
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected override void Update () {
 		if(Input.GetMouseButtonDown(0)) 
 			if(view.isMine){
 				setTargetPosition();
-				ManaHandler(manaCost);
 				ClickAbility();
-				CmdShoot();
-				
-
-				//TesticuleCall(fireball.GetComponent<PhotonView>().viewID); //dc je call le id dla prefab fireball
 			}
 
 
 	}
 
-			
-
-
-
-	void CmdShoot(){
+	protected override void Cast(){
 
 		Vector3 direction = Vector3.Normalize (targetPosition - transform.position);
 		Vector3 offset = new Vector3 (0, 0.5f, 0);
@@ -58,14 +45,6 @@ public class Fireball : Ability {
 		fireball.GetComponent<Projectile> ().owner = owner;
 		Destroy(fireball, 3f);
 
-	}
-	void setTargetPosition(){
-		Plane plane = new Plane(Vector3.up, transform.position);
-		Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
-		float point = 0f;
-		
-		if(plane.Raycast(ray, out point))
-			targetPosition = ray.GetPoint(point);
 	}
 
 	/***[PunRPC] //rpc call pr faire x sur tt les écrans

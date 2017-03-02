@@ -13,22 +13,19 @@ public class damageTest : MonoBehaviour {
 
 	private void OnTriggerStay(Collider col)
 	{	
-
+		
 		var playerController = col.GetComponent<PlayerController> ();
 		if (playerController != null) {
 
 			float damageTaken = Time.deltaTime * damage;
 			if (isDamaging){
-				print("cdf");
 
 				playerController.TakeDamage (damageTaken);
-				playerController.updateHpBar(damage);
-
 			}
 				
 			else {
 				playerController.TakeDamage (-damageTaken);
-				print("aa");
+
 
 
 			}
