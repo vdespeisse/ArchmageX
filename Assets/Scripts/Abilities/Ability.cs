@@ -9,7 +9,6 @@ public class Ability : MonoBehaviour
 	protected Vector3 targetPosition;
 
 	protected float manaCost;
-	protected float currentMana = 100f;
 	protected float maxMana = 100f;
 
 
@@ -41,7 +40,7 @@ public class Ability : MonoBehaviour
 		PlayerController player = GetComponent<PlayerController>();
 
 		
-		if ((timeSinceCast >= cooldown) && (currentMana >= manaCost)) 
+		if ((timeSinceCast >= cooldown) && (player.currentMana >= manaCost)) 
 		{
 			
 			player.currentMana -= manaCost; // currentMana is always = to 100 jdois store la mana qque part somehow
@@ -50,7 +49,7 @@ public class Ability : MonoBehaviour
 			timeSinceCast = 0;
 
 		}  
-		else if (currentMana < manaCost)
+		else if (player.currentMana < manaCost)
 		{
 			print ("Has not enough Mana !");
 		}
