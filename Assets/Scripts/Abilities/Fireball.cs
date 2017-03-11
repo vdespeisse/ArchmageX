@@ -18,7 +18,7 @@ public class Fireball : Ability {
 		owner = gameObject;
 		view = GetComponent<PhotonView>();
 		manaCost = 10f;
-
+		cooldown = 5f;
 
 
 	}
@@ -30,6 +30,7 @@ public class Fireball : Ability {
 				setTargetPosition();
 				ClickAbility();
 			}
+		base.Update();
 
 
 	}

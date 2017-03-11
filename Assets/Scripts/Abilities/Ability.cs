@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-public class Ability : MonoBehaviour
+public class Ability : Photon.MonoBehaviour
 {
 	protected float cooldown = 0;
 	protected float timeSinceCast;
@@ -43,7 +43,7 @@ public class Ability : MonoBehaviour
 		if ((timeSinceCast >= cooldown) && (player.currentMana >= manaCost)) 
 		{
 			
-			player.currentMana -= manaCost; // currentMana is always = to 100 jdois store la mana qque part somehow
+			player.currentMana -= manaCost;
 			player.updateMana(player.currentMana);
 			Cast();
 			timeSinceCast = 0;
